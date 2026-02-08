@@ -1,20 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Build an admin-only, mobile-friendly leave register for Sharaffiya Market that persistently stores employees and leave entries, supports search, and allows editing/exporting records.
+**Goal:** Fix the production white-screen issue by preventing runtime crashes on initial load and showing a styled error fallback when unexpected errors occur.
 
 **Planned changes:**
-- Implement persistent backend storage in a single Motoko actor for Employees and Leave Entries with CRUD and search by optional employee filter and date range.
-- Add admin-only access control using Internet Identity; block all non-admin mutating actions and show an access-denied state for signed-in non-admins.
-- Create mobile-optimized navigation/screens: Home, Add Leave, Search, Employees, and per-employee Leave History.
-- Build Employee Management UI (list + add form) with required Employee Name and optional Employee ID, Phone Number, Department/Section.
-- Build Leave Entry UI to add leave: select employee, pick date, choose leave type (Full Day/Morning Half/Evening Half), optional reason.
-- Implement Search screen to filter leave entries by optional employee and optional from/to date range, showing Employee Name, Date, Leave Type, with empty state.
-- Implement per-employee Leave History page with leave entries and a monthly summary section (grouped by month with counts).
-- Enable edit and delete actions for leave entries from search results and employee history, with confirmation for delete and immediate UI refresh.
-- Apply a simple, clean, professional theme optimized for Android phone readability (consistent typography/spacing; avoid blue+purple palette).
-- Add optional export of the currently viewed leave dataset to a downloadable CSV (PDF optional), generated client-side from fetched data.
-- Set app title/branding text to “Sharaffiya Market Leave Register” (including browser tab title).
-- Add and render basic static visual assets (logo + header illustration) from frontend public assets.
+- Add a safe browser polyfill for `process.env` in `frontend/index.html` to prevent `process is not defined` runtime errors.
+- Ensure `process.env.II_URL` has a sensible default value when missing so the Internet Identity sign-in flow can still start.
+- Add a top-level React error boundary (or equivalent) that displays a themed error screen with clear English text and a Reload action instead of a blank page.
 
-**User-visible outcome:** An admin can sign in with Internet Identity to add/manage employees, record/search/edit/delete leave entries, view per-employee monthly leave summaries, and export filtered leave data (CSV), all in a clean mobile-friendly UI with Sharaffiya Market Leave Register branding.
+**User-visible outcome:** On fresh production loads, the app shows the normal UI (e.g., loading/login) rather than a white screen, and if an unexpected error occurs the user sees a styled “Something went wrong” screen with a Reload button.

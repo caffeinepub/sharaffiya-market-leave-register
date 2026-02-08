@@ -1,383 +1,42 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Sharaffiya Market Leave Register (Frontend)",
+  "title": "Prevent production white-screen with safe env polyfill and top-level error fallback",
   "requirements": [
     {
-      "id": "REQ-2",
-      "summary": "Add admin-only access gating using Internet Identity; show access denied for non-admins and no employee login UI.",
+      "id": "REQ-13",
+      "summary": "Polyfill `process.env` safely in the browser and provide a default `process.env.II_URL` so Internet Identity initialization cannot crash on load.",
       "acceptanceCriteria": [
-        "Unauthenticated users are prompted to sign in using Internet Identity (no other auth providers)",
-        "Frontend shows an \"Access denied\" state for signed-in non-admin principals",
-        "There is no UI for employee accounts or employee self-service login"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "create",
-          "description": "Create the root app shell that uses the authorization component patterns (Internet Identity + role checks) to gate all application screens behind admin-only access, and to render login prompt / access denied states. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/auth/LoginGate.tsx",
-          "operation": "create",
-          "description": "Add a small auth wrapper that uses useInternetIdentity + useActor and calls backend role methods (e.g., getCallerUserRole / isCallerAdmin) to determine whether to show: login prompt, access denied, or the app. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/auth/LoginButton.tsx",
-          "operation": "create",
-          "description": "Add a login/logout button using the authorization component’s recommended Internet Identity flow; ensure logout clears cached React Query data. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/auth/AccessDeniedScreen.tsx",
-          "operation": "create",
-          "description": "Create an AccessDenied screen for authenticated non-admin principals (no data shown). Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/auth/ProfileSetupModal.tsx",
-          "operation": "create",
-          "description": "Implement optional first-login profile name capture via getCallerUserProfile/saveCallerUserProfile (admin identity only), avoiding UI flashes per the authorization component guidance. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/hooks/useActor.ts",
-          "operation": "modify",
-          "description": "Ensure actor initialization + auth state changes integrate cleanly with the admin-only gating flow (e.g., consistent invalidation/clearing behavior on logout via QueryClient)."
-        }
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "summary": "Implement mobile-first navigation and routes for Home, Add Leave, Search, Employees, and per-employee Leave History.",
-      "acceptanceCriteria": [
-        "App has a mobile-friendly navigation (e.g., bottom nav) to Home, Add Leave, Search, Employees",
-        "Routes/screens are clearly separated and named with English user-facing labels",
-        "Per-employee Leave History screen is reachable from Employees list and/or search results",
-        "All screens are usable on narrow phone widths without horizontal scrolling"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Wire the main router and screen layout (header + content + bottom navigation) for Home, Add Leave, Search, Employees, and Leave History; ensure the Leave History route is reachable from lists."
-        },
-        {
-          "path": "frontend/src/components/layout/MobileLayout.tsx",
-          "operation": "create",
-          "description": "Create a mobile-optimized layout wrapper (max width, padding, safe bottom area) shared by all screens using shadcn-ui layout primitives (e.g., Card/Separator) where helpful. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/layout/BottomNav.tsx",
-          "operation": "create",
-          "description": "Create a bottom navigation for phone usage with links to Home, Add Leave, Search, Employees using shadcn-ui Button variants for consistent tap targets. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/pages/HomePage.tsx",
-          "operation": "create",
-          "description": "Create the Home screen with quick navigation actions and lightweight summary placeholders suitable for narrow widths."
-        },
-        {
-          "path": "frontend/src/pages/EmployeesPage.tsx",
-          "operation": "create",
-          "description": "Create the Employees screen and wire navigation to per-employee Leave History."
-        },
-        {
-          "path": "frontend/src/pages/AddLeavePage.tsx",
-          "operation": "create",
-          "description": "Create the Add Leave screen (form-only page) optimized for mobile."
-        },
-        {
-          "path": "frontend/src/pages/SearchPage.tsx",
-          "operation": "create",
-          "description": "Create the Search screen (filters + results) optimized for mobile."
-        },
-        {
-          "path": "frontend/src/pages/EmployeeLeaveHistoryPage.tsx",
-          "operation": "create",
-          "description": "Create the per-employee Leave History screen with monthly grouping/summary and entry actions."
-        }
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "summary": "Implement employee management UI to add and view employees with required name and optional details.",
-      "acceptanceCriteria": [
-        "Employees screen shows a list of employees and an action to add a new employee",
-        "Add Employee form validates that Employee Name is required",
-        "Optional fields can be left blank and are displayed when present",
-        "Employee list updates after creation without requiring a full page reload"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/EmployeesPage.tsx",
-          "operation": "modify",
-          "description": "Implement employee list UI and an 'Add Employee' action; render optional fields when present and keep layout mobile-friendly using shadcn-ui Table/Card/List patterns. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/employees/AddEmployeeDialog.tsx",
-          "operation": "create",
-          "description": "Create an Add Employee dialog/sheet with validation (Employee Name required) using shadcn-ui Dialog/Sheet, Input, Label, and Button components. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/hooks/employees/useEmployees.ts",
-          "operation": "create",
-          "description": "Add React Query hooks for fetching and mutating employees (list + add), ensuring the list updates via cache invalidation/update after creation."
-        },
-        {
-          "path": "frontend/src/lib/formatters/employee.ts",
-          "operation": "create",
-          "description": "Add small formatting helpers to display optional employee details consistently in lists (mobile-readable)."
-        }
-      ]
-    },
-    {
-      "id": "REQ-5",
-      "summary": "Implement Add Leave UI to select employee, pick date, choose leave type, and optionally enter a reason.",
-      "acceptanceCriteria": [
-        "Add Leave screen provides an employee selector populated from existing employees",
-        "Leave Date uses a calendar/date picker control",
-        "Leave Type offers exactly: Full Day, Morning Half, Evening Half",
-        "Reason is optional and supports free text",
-        "Successful submit creates a new leave entry in backend and shows confirmation/updated views"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/AddLeavePage.tsx",
-          "operation": "modify",
-          "description": "Implement the Add Leave form with employee selector, date picker, leave type selector (exactly Full Day/Morning Half/Evening Half), and optional reason; on success show confirmation and reset/update local query caches. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/leaves/LeaveForm.tsx",
-          "operation": "create",
-          "description": "Create a reusable Leave form component used by Add Leave (and later Edit) using shadcn-ui Select/Combobox patterns, Calendar/Popover date picker, Textarea, and Button. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/hooks/leaves/useLeaveMutations.ts",
-          "operation": "create",
-          "description": "Add React Query mutations for creating leaves and refreshing dependent queries (search results and employee history)."
-        },
-        {
-          "path": "frontend/src/lib/mappers/leaveType.ts",
-          "operation": "create",
-          "description": "Add mapping utilities between user-facing leave type labels (Full Day/Morning Half/Evening Half) and backend LeaveType values available in frontend/src/backend.d.ts; ensure UI always displays the required labels."
-        },
-        {
-          "path": "frontend/src/lib/dates/time.ts",
-          "operation": "create",
-          "description": "Add utilities to convert between JS Date and backend Time (bigint) and to format dates for display consistently across screens."
-        }
-      ]
-    },
-    {
-      "id": "REQ-6",
-      "summary": "Implement leave search UI with optional employee filter and date range, using backend queries and readable results.",
-      "acceptanceCriteria": [
-        "Search screen supports filtering by employee (optional) and date range (optional from and/or to)",
-        "Results list displays employee name, leave date, and leave type in a clear, readable layout",
-        "Search uses backend query methods (not client-only filtering of an unbounded dataset)",
-        "Empty state is shown when no results match"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/SearchPage.tsx",
-          "operation": "modify",
-          "description": "Implement search filters (optional employee + optional from/to) and results list (Employee Name, Date, Leave Type) with mobile-friendly spacing and an empty state; call backend search capability rather than filtering an unbounded local dataset. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/hooks/leaves/useLeaveSearch.ts",
-          "operation": "create",
-          "description": "Add a React Query hook that performs server-side leave searches based on current criteria and returns results + loading/empty/error states."
-        },
-        {
-          "path": "frontend/src/components/leaves/LeaveResultsList.tsx",
-          "operation": "create",
-          "description": "Create a reusable results list component used by Search and History views; include per-item action affordances (edit/delete) wiring to REQ-8. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/hooks/employees/useEmployees.ts",
-          "operation": "modify",
-          "description": "Ensure employees list is available for populating the Search employee filter selector without redundant fetching."
-        }
-      ]
-    },
-    {
-      "id": "REQ-7",
-      "summary": "Implement employee-wise leave history with monthly grouped summary and counts.",
-      "acceptanceCriteria": [
-        "Selecting an employee opens a Leave History page showing that employee’s leave entries",
-        "Page includes a monthly summary section grouped by month (e.g., YYYY-MM) with counts",
-        "Monthly counts reflect the leave entries stored in backend for the selected employee"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/EmployeeLeaveHistoryPage.tsx",
-          "operation": "modify",
-          "description": "Implement fetching and display of a selected employee’s leave entries plus a monthly grouped summary section with counts; keep view readable on Android phone widths."
-        },
-        {
-          "path": "frontend/src/hooks/leaves/useEmployeeLeaves.ts",
-          "operation": "create",
-          "description": "Add a React Query hook to fetch leaves for a single employee and expose loading/empty/error states for the history view."
-        },
-        {
-          "path": "frontend/src/lib/leaves/monthlySummary.ts",
-          "operation": "create",
-          "description": "Add utilities to group leave entries by month (YYYY-MM) and compute monthly counts for the selected employee."
-        },
-        {
-          "path": "frontend/src/pages/EmployeesPage.tsx",
-          "operation": "modify",
-          "description": "Wire 'View Leave History' navigation from each employee row/card to the Leave History screen."
-        }
-      ]
-    },
-    {
-      "id": "REQ-8",
-      "summary": "Allow admin to edit or delete leave entries from Search results and from employee history, with confirmation and immediate UI refresh.",
-      "acceptanceCriteria": [
-        "Each leave entry in lists provides actions to edit and delete",
-        "Edit allows changing date, leave type, and reason (and employee if feasible) and persists changes",
-        "Delete prompts for confirmation and removes the entry from backend",
-        "UI lists refresh to reflect edits/deletions immediately after success"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/leaves/LeaveResultsList.tsx",
-          "operation": "modify",
-          "description": "Add per-entry actions (Edit/Delete) rendered consistently in both Search and History contexts using shadcn-ui DropdownMenu or inline buttons; ensure actions remain usable on small screens. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/leaves/EditLeaveDialog.tsx",
-          "operation": "create",
-          "description": "Create an Edit Leave dialog/sheet reusing LeaveForm for date/leave type/reason (and employee if supported by current backend interface), with save/cancel flows. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/common/ConfirmDialog.tsx",
-          "operation": "create",
-          "description": "Create a reusable confirmation dialog for destructive actions (delete leave entry) using shadcn-ui AlertDialog. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/hooks/leaves/useLeaveMutations.ts",
-          "operation": "modify",
-          "description": "Add update/delete leave mutations; on success, invalidate/refresh the relevant queries (search results and employee history) to reflect changes immediately."
-        },
-        {
-          "path": "frontend/src/pages/SearchPage.tsx",
-          "operation": "modify",
-          "description": "Wire edit/delete actions from search results to the dialogs/mutations and ensure the list updates immediately after success."
-        },
-        {
-          "path": "frontend/src/pages/EmployeeLeaveHistoryPage.tsx",
-          "operation": "modify",
-          "description": "Wire edit/delete actions from employee history entries to the dialogs/mutations and ensure monthly counts refresh after changes."
-        }
-      ]
-    },
-    {
-      "id": "REQ-9",
-      "summary": "Apply a clean, minimal, professional mobile theme with consistent typography/spacing and without a blue+purple palette.",
-      "acceptanceCriteria": [
-        "Consistent theme tokens (colors/typography/spacing) are used across pages",
-        "Primary actions (e.g., Save/Add/Search) are visually consistent",
-        "Forms are easy to use on mobile (large tap targets, clear labels, sensible validation messages)",
-        "Theme does not rely on a blue+purple palette"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/index.css",
-          "operation": "create",
-          "description": "Add global theme tokens (CSS variables used by Tailwind/shadcn-ui) and base typography/spacing rules optimized for phone readability; choose a minimal professional palette that avoids blue+purple emphasis. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/tailwind.config.js",
-          "operation": "modify",
-          "description": "Tune Tailwind theme configuration if needed for consistent radius/spacing/shadows and to align with the minimal professional palette (keeping shadcn-ui token approach)."
-        },
-        {
-          "path": "frontend/src/components/layout/MobileLayout.tsx",
-          "operation": "modify",
-          "description": "Ensure consistent page paddings, readable font sizes, and large tap targets across all screens using shared layout primitives."
-        }
-      ]
-    },
-    {
-      "id": "REQ-10",
-      "summary": "Add client-side CSV export for currently viewed leave data from Search and Employee History views.",
-      "acceptanceCriteria": [
-        "User can export currently viewed leave dataset to a downloadable file",
-        "CSV export includes columns: Employee Name, Date, Leave Type, Reason",
-        "Export uses purely client-side generation from fetched data (no external services)",
-        "If PDF export is not implemented, CSV export still fulfills this requirement"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/lib/export/csv.ts",
-          "operation": "create",
-          "description": "Implement client-side CSV generation and download utilities for leave datasets (Employee Name, Date, Leave Type, Reason)."
-        },
-        {
-          "path": "frontend/src/pages/SearchPage.tsx",
-          "operation": "modify",
-          "description": "Add an 'Export CSV' action that exports the currently displayed search results dataset using the client-side CSV utility."
-        },
-        {
-          "path": "frontend/src/pages/EmployeeLeaveHistoryPage.tsx",
-          "operation": "modify",
-          "description": "Add an 'Export CSV' action that exports the currently displayed employee leave history dataset using the client-side CSV utility."
-        }
-      ]
-    },
-    {
-      "id": "REQ-11",
-      "summary": "Set app title and branding text to \"Sharaffiya Market Leave Register\" in UI and browser tab title.",
-      "acceptanceCriteria": [
-        "App header/home screen displays \"Sharaffiya Market Leave Register\"",
-        "Browser tab title reflects the app name"
+        "On a fresh load in production, the app renders UI (loading/login screen) instead of a blank white page.",
+        "No `ReferenceError: process is not defined` (or equivalent) occurs in the browser console during initial load.",
+        "If `process.env.II_URL` is not provided by the runtime, a default Internet Identity provider URL is present so the sign-in flow can still be initiated."
       ],
       "file_operations": [
         {
           "path": "frontend/index.html",
           "operation": "modify",
-          "description": "Update the document title to \"Sharaffiya Market Leave Register\"."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Render the app name \"Sharaffiya Market Leave Register\" prominently in the header and/or Home screen branding area."
+          "description": "Add a small, early inline script (before the app bundle) that initializes a safe global `process` object with an `env` object if missing, and ensures `process.env.II_URL` has a sensible default (e.g., the standard Internet Identity URL) when not provided, so `process.env.II_URL` reads in the React bundle do not throw at runtime."
         }
       ]
     },
     {
-      "id": "REQ-12",
-      "summary": "Include generated logo and header illustration as static frontend assets and render them in the UI.",
+      "id": "REQ-14",
+      "summary": "Add a top-level React error boundary so unexpected runtime errors show a styled fallback screen with a clear message and reload action instead of a white screen.",
       "acceptanceCriteria": [
-        "Generated images are saved under frontend/public/assets/generated and referenced directly by the UI",
-        "Logo is used in the app header/home without impacting performance on mobile",
-        "Assets match the minimal, professional theme"
+        "When a rendering/runtime exception occurs in the React tree, an error screen is displayed with an English message (e.g., 'Something went wrong') and a 'Reload' button.",
+        "The error screen is styled consistently with the existing Tailwind/Shadcn theme (no unstyled blank page).",
+        "Normal navigation and screens work when no error is thrown."
       ],
       "file_operations": [
         {
-          "path": "frontend/public/assets/generated/sharaffiya-logo.dim_512x512.png",
+          "path": "frontend/src/components/common/ErrorBoundary.tsx",
           "operation": "create",
-          "description": "Add the generated minimalist logo asset at the exact required path for static use in the UI."
+          "description": "Create a reusable top-level React Error Boundary component that catches render/lifecycle errors and renders a themed fallback UI using existing Tailwind/shadcn styling (e.g., an Alert-style message plus a 'Reload' Button that calls `window.location.reload()`)."
         },
         {
-          "path": "frontend/public/assets/generated/leave-header-illustration.dim_1600x600.png",
-          "operation": "create",
-          "description": "Add the generated header illustration asset at the exact required path for static use in the UI."
-        },
-        {
-          "path": "frontend/src/components/branding/AppBranding.tsx",
-          "operation": "create",
-          "description": "Create a small branding component that renders the static logo and header illustration from frontend/public/assets/generated and is optimized for mobile (no heavy effects)."
-        },
-        {
-          "path": "frontend/src/pages/HomePage.tsx",
+          "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Wire the branding component so the logo and header illustration appear on the Home screen and/or header area."
-        },
-        {
-          "path": "frontend/src/components/layout/MobileLayout.tsx",
-          "operation": "modify",
-          "description": "Optionally place the logo in the app header area (small size) using the branding component, keeping it lightweight for mobile."
+          "description": "Wrap the application UI (AuthGate + MobileLayout + RouterProvider) with the new ErrorBoundary so any unexpected runtime error results in the visible fallback screen rather than a blank page; ensure the normal app flow is unchanged when no error occurs."
         }
       ]
     }

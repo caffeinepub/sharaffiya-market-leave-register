@@ -3,6 +3,24 @@
         <meta charset='UTF-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1.0' />
         <title>Sharaffiya Market Leave Register</title>
+        <script>
+            // Polyfill process.env for production builds
+            // This prevents "ReferenceError: process is not defined" errors
+            if (typeof process === 'undefined') {
+                window.process = {
+                    env: {
+                        // Default Internet Identity URL for production
+                        II_URL: 'https://identity.ic0.app'
+                    }
+                };
+            } else if (typeof process.env === 'undefined') {
+                window.process.env = {
+                    II_URL: 'https://identity.ic0.app'
+                };
+            } else if (typeof process.env.II_URL === 'undefined') {
+                window.process.env.II_URL = 'https://identity.ic0.app';
+            }
+        </script>
     </head>
     <body>
         <div id='root'></div>

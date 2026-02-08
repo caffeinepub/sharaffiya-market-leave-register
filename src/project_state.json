@@ -1,15 +1,16 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 3,
+  "projectStateVersion": 5,
   "summary": "Admin-only Android leave register app for a shop owner/manager to manage employees and record/search leave entries with persistent storage, simple navigation, and optional export/reporting.",
   "architectural_notes": [
     "Admin-only application; no employee authentication/login flows required.",
     "Target platform: Android phones; prioritize simple navigation across Home, Add Leave, Search, Employees.",
     "Data persistence required across restarts; storage can be local-first or simple cloud-backed."
   ],
-  "known_issues": [],
-  "isFixRequest": false,
-  "imageRequirements": "## Required Images\n- Minimalist logo mark with clean typography (sharaffiya-logo.dim_512x512.png)\n- Simple flat header illustration featuring a small shop and a calendar motif, minimal professional palette (leave-header-illustration.dim_1600x600.png)",
+  "known_issues": [
+    "App shows only a white screen when launched (post-deploy)."
+  ],
+  "isFixRequest": true,
   "existing_features": [
     {
       "id": "feature-add-admin-only-access-control-only-an-admin-owner-manager-can-access-and-modify-data-no-employee-login-flows-should-exist",
@@ -96,6 +97,22 @@
       "title": "Generate and include basic visual assets: a minimalist app logo and a simple header illustration consistent with the chosen theme, and render them from static assets in the frontend.",
       "reqIds": [
         "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-prevent-the-app-from-rendering-a-blank-white-screen-by-adding-a-safe-browser-polyfill-for-process-env-in-frontend-index-html-so-any-references-to-process-env-ii-url-do-not-throw-at-runtime-and-set-a-sensible-default-value-for-process-env-ii-url-when-it-is-missing",
+      "title": "Prevent the app from rendering a blank white screen by adding a safe browser polyfill for `process.env` in `frontend/index.html` so any references to `process.env.II_URL` do not throw at runtime, and set a sensible default value for `process.env.II_URL` when it is missing.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-top-level-react-error-boundary-or-equivalent-non-crashing-fallback-around-the-application-ui-so-any-unexpected-runtime-error-results-in-a-visible-error-screen-with-clear-english-text-and-a-reload-action-rather-than-a-white-screen",
+      "title": "Add a top-level React error boundary (or equivalent non-crashing fallback) around the application UI so any unexpected runtime error results in a visible error screen with clear English text and a reload action, rather than a white screen.",
+      "reqIds": [
+        "REQ-14"
       ],
       "version": 1
     }

@@ -1,150 +1,16 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-08T14:36:56.277Z",
-  "summary": "The diff adds a Motoko backend actor plus a new React/TanStack Router mobile UI with Internet Identity login, employee/leave CRUD hooks, editing/deleting dialogs, CSV export helper, and basic theming. Several BuildRequest requirements appear partially implemented or mismatched (data models, admin-only UX, search/query support, stable persistence, branding, and export columns).",
-  "missing_requirements": [
-    {
-      "id": "REQ-1",
-      "requirement": "Persistent backend storage for Employees and Leave Entries with stable storage across upgrades/restarts; leave entry must include employeeId, date, leaveType (Full Day/Morning Half/Evening Half), optional reason, and unique leaveEntryId; plus CRUD and search by optional employee filter and date range.",
-      "reason": "backend/main.mo shows in-memory Maps for employees/leaveEntries but no stable variables or preupgrade/postupgrade logic in the visible portion; LeaveType is defined as {#vacation; #sick; #special} and LeaveEntry lacks both optional reason and unique leaveEntryId; the diff excerpt does not show a search method supporting employee/date-range filtering.",
-      "evidence": [
-        "backend/main.mo"
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "requirement": "Frontend shows an 'Access denied' state for signed-in non-admin principals; backend rejects mutating calls from non-admin principals; no employee login flows.",
-      "reason": "Although AccessDeniedScreen is added, App.tsx's AuthGate does not appear to check admin status or render AccessDeniedScreen for non-admin users (it returns children for any authenticated user when actor exists).",
-      "evidence": [
-        "frontend/src/App.tsx",
-        "frontend/src/components/auth/AccessDeniedScreen.tsx"
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "requirement": "Employee Management UI fields must include Employee Name (required), Employee ID (optional), Phone Number (optional), Department/Section (optional).",
-      "reason": "The employee model and AddEmployeeDialog only handle fullName and jobTitle (used as Department/Section). There are no fields for optional Employee ID or Phone Number, and backend Employee type is {id, fullName, jobTitle} only.",
-      "evidence": [
-        "backend/main.mo",
-        "frontend/src/components/employees/AddEmployeeDialog.tsx"
-      ]
-    },
-    {
-      "id": "REQ-5",
-      "requirement": "Leave Entry UI must support leave type exactly: Full Day/Morning Half/Evening Half, and optional free-text reason.",
-      "reason": "Frontend uses label mapping to backend LeaveType variants (#vacation/#sick/#special) and EditLeaveDialog constructs a LeaveEntry without a reason field. Backend LeaveEntry type also lacks reason. (Add-leave page implementation is not shown in the diff summary, so the presence of a reason input cannot be confirmed.)",
-      "evidence": [
-        "backend/main.mo",
-        "frontend/src/components/leaves/EditLeaveDialog.tsx",
-        "frontend/src/lib/mappers/leaveType.ts"
-      ]
-    },
-    {
-      "id": "REQ-6",
-      "requirement": "Search screen filters leave entries by optional employee and optional date range, using backend query methods (not client-only filtering).",
-      "reason": "The diff excerpt does not show any backend query method that accepts optional employee filter and from/to date range; useQueries.ts shows getEmployeeLeaves(employeeId) but no generalized search API in the visible portion.",
-      "evidence": [
-        "backend/main.mo",
-        "frontend/src/hooks/useQueries.ts"
-      ]
-    },
-    {
-      "id": "REQ-7",
-      "requirement": "Employee-wise leave history page includes a monthly summary grouped by month with counts.",
-      "reason": "A helper (groupLeavesByMonth) is added, but the EmployeeLeaveHistory page UI is not shown in the diff summary, so the monthly summary section cannot be confirmed as implemented.",
-      "evidence": [
-        "frontend/src/lib/leaves/monthlySummary.ts",
-        "frontend/src/App.tsx"
-      ]
-    },
-    {
-      "id": "REQ-10",
-      "requirement": "CSV export includes columns: Employee Name, Date, Leave Type, Reason.",
-      "reason": "exportToCSV uses headers ['Employee Name','Date','Leave Type'] and does not include a Reason column.",
-      "evidence": [
-        "frontend/src/lib/export/csv.ts"
-      ]
-    },
-    {
-      "id": "REQ-11",
-      "requirement": "Set the app title and user-facing branding text to exactly 'Sharaffiya Market Leave Register' in the UI and browser tab title.",
-      "reason": "Login screen heading shows the full text, but AppHeader splits branding into 'Sharaffiya Market' and 'Leave Register' rather than the full title as a single label. The diff summary does not show any change setting the browser tab title.",
-      "evidence": [
-        "frontend/src/App.tsx",
-        "frontend/src/components/layout/AppHeader.tsx"
-      ]
-    },
-    {
-      "id": "REQ-12",
-      "requirement": "Generated logo and header illustration saved under frontend/public/assets/generated and referenced by the UI.",
-      "reason": "UI references the logo path, but the diff summary does not show the actual image files under frontend/public/assets/generated (they may be in omitted files); the required header illustration is not shown as referenced anywhere in the visible UI code.",
-      "evidence": [
-        "frontend/src/components/layout/AppHeader.tsx"
-      ]
-    }
-  ],
-  "hallucinated_features": [
-    {
-      "description": "User profile setup flow (name capture) and user profile storage APIs",
-      "reason": "BuildRequest does not ask for user profiles; it only requires admin-only access control via Internet Identity. The diff adds UserProfile types and get/save profile methods plus a ProfileSetupModal UX.",
-      "evidence": [
-        "backend/main.mo",
-        "frontend/src/components/auth/ProfileSetupModal.tsx",
-        "frontend/src/hooks/useQueries.ts",
-        "frontend/src/App.tsx"
-      ]
-    },
-    {
-      "description": "Secret-token based access-control initialization via URL parameter (caffeineAdminToken)",
-      "reason": "BuildRequest specifies admin-only access control but does not request a URL-secret token mechanism for initializing admin access; it also risks adding an unrequested auth/backdoor mechanism.",
-      "evidence": [
-        "frontend/src/hooks/useActor.ts"
-      ]
-    },
-    {
-      "description": "Leave types implemented as #vacation/#sick/#special rather than the specified Full Day/Morning Half/Evening Half",
-      "reason": "BuildRequest explicitly defines the leave type options. The diff implements different backend variants and then maps UI labels onto them.",
-      "evidence": [
-        "backend/main.mo",
-        "frontend/src/lib/mappers/leaveType.ts"
-      ]
-    }
-  ],
-  "confidence": 0.72,
+  "generatedAt": "2026-02-08T15:21:45.385Z",
+  "summary": "REQ-13 and REQ-14 appear to be implemented: a `process.env` polyfill with a default `II_URL` was added to `frontend/index.html`, and a top-level React Error Boundary component was added and wired into the app to show a styled fallback with a reload action instead of a white screen.",
+  "missing_requirements": [],
+  "hallucinated_features": [],
+  "confidence": 0.84,
   "changed_files": [
-    "all_files_summary.json",
-    "backend/main.mo",
     "frontend-file-summaries.txt",
-    "frontend/index.css",
     "frontend/index.html",
     "frontend/src/App.tsx",
-    "frontend/src/components/auth/AccessDeniedScreen.tsx",
-    "frontend/src/components/auth/LoginButton.tsx",
-    "frontend/src/components/auth/ProfileSetupModal.tsx",
-    "frontend/src/components/common/ConfirmDialog.tsx",
-    "frontend/src/components/employees/AddEmployeeDialog.tsx",
-    "frontend/src/components/layout/AppHeader.tsx",
-    "frontend/src/components/layout/BottomNav.tsx",
-    "frontend/src/components/layout/MobileLayout.tsx",
-    "frontend/src/components/leaves/EditLeaveDialog.tsx",
-    "frontend/src/components/leaves/LeaveResultsList.tsx",
-    "frontend/src/hooks/useActor.ts",
-    "frontend/src/hooks/useInternetIdentity.ts",
-    "frontend/src/hooks/useQueries.ts",
-    "frontend/src/index.css",
-    "frontend/src/lib/export/csv.ts",
-    "frontend/src/lib/leaves/monthlySummary.ts",
-    "frontend/src/lib/mappers/leaveType.ts",
-    "frontend/src/lib/utils.ts",
-    "frontend/src/main.tsx",
-    "frontend/src/pages/AddLeavePage.tsx",
-    "frontend/src/pages/EmployeeLeaveHistoryPage.tsx",
-    "frontend/src/pages/EmployeesPage.tsx",
-    "frontend/src/pages/HomePage.tsx",
-    "frontend/src/pages/SearchPage.tsx",
-    "frontend/src/utils/urlParams.ts",
-    "frontend/tailwind.config.js",
+    "frontend/src/components/common/ErrorBoundary.tsx",
     "project_state.json"
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "frontend/src/App.tsx": "Main application component with router setup using TanStack Router v1.131, authentication gate, profile setup flow, and route definitions for all pages with proper Outlet component usage.",
+  "frontend/src/App.tsx": "Main application component with router setup, authentication gate, profile setup flow, and top-level ErrorBoundary wrapper to catch and display runtime errors gracefully.",
   "frontend/src/hooks/useQueries.ts": "React Query hooks for all backend operations including user profiles, employee CRUD, leave CRUD, and search functionality with proper cache invalidation.",
   "frontend/src/components/auth/LoginButton.tsx": "Reusable login/logout button component using Internet Identity with loading states and query cache clearing on logout.",
   "frontend/src/components/auth/AccessDeniedScreen.tsx": "Screen displayed to authenticated non-admin users showing access denied message with option to sign out.",
@@ -21,5 +21,6 @@
   "frontend/src/lib/export/csv.ts": "Client-side CSV export utility that generates and downloads leave data with employee names, dates, and leave types.",
   "frontend/src/lib/utils.ts": "Utility function for merging Tailwind CSS classes using clsx and tailwind-merge.",
   "frontend/src/index.css": "Global styles with OKLCH-based minimal grayscale color system for light and dark modes, optimized for professional mobile appearance.",
-  "frontend/index.html": "HTML entry point with updated page title \"Sharaffiya Market Leave Register\"."
+  "frontend/index.html": "HTML entry point with inline script polyfill for process.env to prevent production crashes when environment variables are missing, ensuring II_URL has a safe default.",
+  "frontend/src/components/common/ErrorBoundary.tsx": "React Error Boundary component that catches runtime errors and displays a styled fallback screen with error details and a reload button instead of a white screen."
 }

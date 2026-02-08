@@ -11,6 +11,7 @@ import EmployeesPage from './pages/EmployeesPage';
 import AddLeavePage from './pages/AddLeavePage';
 import SearchPage from './pages/SearchPage';
 import EmployeeLeaveHistoryPage from './pages/EmployeeLeaveHistoryPage';
+import ErrorBoundary from './components/common/ErrorBoundary';
 import { Loader2 } from 'lucide-react';
 
 function AuthGate({ children }: { children: React.ReactNode }) {
@@ -77,11 +78,13 @@ function AuthGate({ children }: { children: React.ReactNode }) {
 
 function AppContent() {
   return (
-    <AuthGate>
-      <MobileLayout>
-        <RouterProvider router={router} />
-      </MobileLayout>
-    </AuthGate>
+    <ErrorBoundary>
+      <AuthGate>
+        <MobileLayout>
+          <RouterProvider router={router} />
+        </MobileLayout>
+      </AuthGate>
+    </ErrorBoundary>
   );
 }
 
