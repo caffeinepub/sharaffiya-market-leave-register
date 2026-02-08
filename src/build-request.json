@@ -1,0 +1,267 @@
+{
+  "kind": "build_request",
+  "title": "Sharaffiya Market Leave Register (admin-only employee leave tracking)",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Implement persistent backend storage for Employees and Leave Entries in the single Motoko actor, supporting create/read/update/delete (CRUD) operations and search queries needed by the UI.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Data Storage\nStore all data locally or in a simple cloud database\nData should persist even after app restart"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Employees and leave entries persist across canister upgrades/restarts via stable storage",
+        "Backend exposes methods to: add/list/update/delete employees",
+        "Backend exposes methods to: add/list/update/delete leave entries",
+        "Backend exposes methods to search leave entries by optional employee filter and date range (from/to)",
+        "Leave entry includes: employeeId reference, date, leaveType (Full Day/Morning Half/Evening Half), optional reason, and unique leaveEntryId"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Add admin-only access control: only an Admin (Owner/Manager) can access and modify data; no employee login flows should exist.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "User Roles\nAdmin (Owner/Manager) – full access\nNo employee login required (admin-only app)"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Unauthenticated users are prompted to sign in using Internet Identity (no other auth providers)",
+        "Backend rejects all mutating calls (add/update/delete) from non-admin principals",
+        "Frontend shows an \"Access denied\" state for signed-in non-admin principals",
+        "There is no UI for employee accounts or employee self-service login"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Create the core navigation optimized for Android phones with clear screens: Home, Add Leave, Search, Employees, and per-employee Leave History.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Easy navigation (Home, Add Leave, Search, Employees)\nOptimized for Android phones\nBuild the app with a beginner-friendly structure and clear screens."
+        ]
+      },
+      "acceptanceCriteria": [
+        "App has a mobile-friendly navigation (e.g., bottom nav) to Home, Add Leave, Search, Employees",
+        "Routes/screens are clearly separated and named with English user-facing labels",
+        "Per-employee Leave History screen is reachable from Employees list and/or search results",
+        "All screens are usable on narrow phone widths without horizontal scrolling"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Employee Management UI: allow admin to add and view employees with fields Employee Name (required), Employee ID (optional), Phone Number (optional), Department/Section (optional).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Employee Management\nAdd employee details:\nEmployee Name\nEmployee ID (optional)\nPhone Number (optional)\nDepartment/Section (optional)"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Employees screen shows a list of employees and an action to add a new employee",
+        "Add Employee form validates that Employee Name is required",
+        "Optional fields can be left blank and are displayed when present",
+        "Employee list updates after creation without requiring a full page reload"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Leave Entry UI: allow admin to add a leave entry by selecting an employee from the employee list, choosing a leave date via calendar picker, selecting leave type (Full Day/Morning Half/Evening Half), and optionally entering a reason.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Leave Entry\nAdd leave with:\nEmployee Name (select from list)\nLeave Date (calendar picker)\nLeave Type:\nFull Day\nMorning Half\nEvening Half\nReason for Leave (optional text)"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Add Leave screen provides an employee selector populated from existing employees",
+        "Leave Date uses a calendar/date picker control",
+        "Leave Type offers exactly: Full Day, Morning Half, Evening Half",
+        "Reason is optional and supports free text",
+        "Successful submit creates a new leave entry in backend and shows confirmation/updated views"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Leave Records & Search: implement a Search screen that filters leave entries by Employee Name and date range (from–to) and displays results showing Employee Name, Date, and Leave Type.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Leave Records & Search\nSearch leaves by:\nEmployee Name\nDate range (from – to)\nDisplay results showing:\nEmployee Name\nDate\nLeave Type (Full / Morning Half / Evening Half)"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Search screen supports filtering by employee (optional) and date range (optional from and/or to)",
+        "Results list displays employee name, leave date, and leave type in a clear, readable layout",
+        "Search uses backend query methods (not client-only filtering of an unbounded dataset)",
+        "Empty state is shown when no results match"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Leave History View: implement an employee-wise leave history page with a monthly view summary (including monthly leave count per employee).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Leave History View\nEmployee-wise leave history page\nMonthly view summary",
+          "Optional (If Possible)\nMonthly leave count per employee"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Selecting an employee opens a Leave History page showing that employee’s leave entries",
+        "Page includes a monthly summary section grouped by month (e.g., YYYY-MM) with counts",
+        "Monthly counts reflect the leave entries stored in backend for the selected employee"
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Edit & Delete: allow admin to edit or delete any leave entry from search results and from the employee leave history view.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Edit & Delete\nEdit or delete any leave entry"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Each leave entry in lists provides actions to edit and delete",
+        "Edit allows changing date, leave type, and reason (and employee if feasible) and persists changes",
+        "Delete prompts for confirmation and removes the entry from backend",
+        "UI lists refresh to reflect edits/deletions immediately after success"
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "text": "Apply a simple, clean, professional UI theme with minimal colors, optimized for Android phone readability; enforce consistent typography, spacing, and component styling across all screens.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "UI / UX Requirements\nSimple and clean design\nMinimal colors, professional look\nOptimized for Android phones"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Consistent theme tokens (colors/typography/spacing) are used across pages",
+        "Primary actions (e.g., Save/Add/Search) are visually consistent",
+        "Forms are easy to use on mobile (large tap targets, clear labels, sensible validation messages)",
+        "Theme does not rely on a blue+purple palette"
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "text": "Optional export: add an export function to download leave data as a file (CSV required; PDF optional if feasible) filtered by the current search criteria or by employee history view.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Optional (If Possible)\nExport leave data as Excel/PDF"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can export currently viewed leave dataset to a downloadable file",
+        "CSV export includes columns: Employee Name, Date, Leave Type, Reason",
+        "Export uses purely client-side generation from fetched data (no external services)",
+        "If PDF export is not implemented, CSV export still fulfills this requirement"
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "text": "Set the app title and user-facing branding text to \"Sharaffiya Market Leave Register\" in the UI.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "The app name is sharaffiya market leave register"
+        ]
+      },
+      "acceptanceCriteria": [
+        "App header/home screen displays \"Sharaffiya Market Leave Register\"",
+        "Browser tab title reflects the app name"
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "text": "Generate and include basic visual assets: a minimalist app logo and a simple header illustration consistent with the chosen theme, and render them from static assets in the frontend.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Generated images are saved under frontend/public/assets/generated and referenced directly by the UI",
+        "Logo is used in the app header/home without impacting performance on mobile",
+        "Assets match the minimal, professional theme"
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor (no additional backend services).",
+    "Do not edit any files under frontend/src/components/ui or any paths listed as immutable by the platform.",
+    "Use English for all user-facing text.",
+    "No third-party authentication providers; only Internet Identity is allowed if authentication is used.",
+    "No external databases; persistence must be implemented using Internet Computer canister storage."
+  ],
+  "nonGoals": [
+    "Employee self-service login or employee-facing UI.",
+    "Real-time updates via WebSockets or push notifications.",
+    "Integrations with external email/SMS services.",
+    "Complex payroll/attendance calculations beyond leave tracking."
+  ],
+  "imageRequirements": {
+    "required": [
+      "Minimalist logo mark with clean typography (sharaffiya-logo.dim_512x512.png)",
+      "Simple flat header illustration featuring a small shop and a calendar motif, minimal professional palette (leave-header-illustration.dim_1600x600.png)"
+    ],
+    "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [
+      "Build an admin-only mobile-friendly leave register for a shop to manage employees and record/search leave entries with persistent storage."
+    ],
+    "goalsToRemove": [],
+    "preferencesToAdd": [
+      "Simple, clean, professional UI with minimal colors; optimized for Android phone screens."
+    ],
+    "preferencesToRemove": [],
+    "miscToAdd": [
+      "App name: Sharaffiya Market Leave Register"
+    ],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
+  }
+}

@@ -1,0 +1,240 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-add-admin-only-access-control-only-an-admin-owner-manager-can-access-and-modify-data-no-employee-login-flows-should-exist",
+      "featureTitle": "Add admin-only access control: only an Admin (Owner/Manager) can access and modify data; no employee login flows should exist.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/auth/AccessDeniedScreen.tsx",
+        "frontend/src/components/auth/LoginButton.tsx",
+        "frontend/src/components/auth/ProfileSetupModal.tsx",
+        "frontend/src/hooks/useActor.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-the-core-navigation-optimized-for-android-phones-with-clear-screens-home-add-leave-search-employees-and-per-employee-leave-history",
+      "featureTitle": "Create the core navigation optimized for Android phones with clear screens: Home, Add Leave, Search, Employees, and per-employee Leave History.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/layout/BottomNav.tsx",
+        "frontend/src/components/layout/MobileLayout.tsx",
+        "frontend/src/pages/AddLeavePage.tsx",
+        "frontend/src/pages/EmployeeLeaveHistoryPage.tsx",
+        "frontend/src/pages/EmployeesPage.tsx",
+        "frontend/src/pages/HomePage.tsx",
+        "frontend/src/pages/SearchPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-employee-management-ui-allow-admin-to-add-and-view-employees-with-fields-employee-name-required-employee-id-optional-phone-number-optional-department-section-optional",
+      "featureTitle": "Employee Management UI: allow admin to add and view employees with fields Employee Name (required), Employee ID (optional), Phone Number (optional), Department/Section (optional).",
+      "files": [
+        "frontend/src/components/employees/AddEmployeeDialog.tsx",
+        "frontend/src/pages/EmployeesPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-leave-entry-ui-allow-admin-to-add-a-leave-entry-by-selecting-an-employee-from-the-employee-list-choosing-a-leave-date-via-calendar-picker-selecting-leave-type-full-day-morning-half-evening-half-and-optionally-entering-a-reason",
+      "featureTitle": "Leave Entry UI: allow admin to add a leave entry by selecting an employee from the employee list, choosing a leave date via calendar picker, selecting leave type (Full Day/Morning Half/Evening Half), and optionally entering a reason.",
+      "files": [
+        "frontend/src/lib/mappers/leaveType.ts",
+        "frontend/src/pages/AddLeavePage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-leave-records-search-implement-a-search-screen-that-filters-leave-entries-by-employee-name-and-date-range-from-to-and-displays-results-showing-employee-name-date-and-leave-type",
+      "featureTitle": "Leave Records & Search: implement a Search screen that filters leave entries by Employee Name and date range (from–to) and displays results showing Employee Name, Date, and Leave Type.",
+      "files": [
+        "frontend/src/components/leaves/LeaveResultsList.tsx",
+        "frontend/src/pages/SearchPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-leave-history-view-implement-an-employee-wise-leave-history-page-with-a-monthly-view-summary-including-monthly-leave-count-per-employee",
+      "featureTitle": "Leave History View: implement an employee-wise leave history page with a monthly view summary (including monthly leave count per employee).",
+      "files": [
+        "frontend/src/lib/leaves/monthlySummary.ts",
+        "frontend/src/pages/EmployeeLeaveHistoryPage.tsx",
+        "frontend/src/pages/EmployeesPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-edit-delete-allow-admin-to-edit-or-delete-any-leave-entry-from-search-results-and-from-the-employee-leave-history-view",
+      "featureTitle": "Edit & Delete: allow admin to edit or delete any leave entry from search results and from the employee leave history view.",
+      "files": [
+        "frontend/src/components/common/ConfirmDialog.tsx",
+        "frontend/src/components/leaves/EditLeaveDialog.tsx",
+        "frontend/src/components/leaves/LeaveResultsList.tsx",
+        "frontend/src/pages/EmployeeLeaveHistoryPage.tsx",
+        "frontend/src/pages/SearchPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-apply-a-simple-clean-professional-ui-theme-with-minimal-colors-optimized-for-android-phone-readability-enforce-consistent-typography-spacing-and-component-styling-across-all-screens",
+      "featureTitle": "Apply a simple, clean, professional UI theme with minimal colors, optimized for Android phone readability; enforce consistent typography, spacing, and component styling across all screens.",
+      "files": [
+        "frontend/src/components/layout/MobileLayout.tsx",
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-9"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-optional-export-add-an-export-function-to-download-leave-data-as-a-file-csv-required-pdf-optional-if-feasible-filtered-by-the-current-search-criteria-or-by-employee-history-view",
+      "featureTitle": "Optional export: add an export function to download leave data as a file (CSV required; PDF optional if feasible) filtered by the current search criteria or by employee history view.",
+      "files": [
+        "frontend/src/lib/export/csv.ts",
+        "frontend/src/pages/EmployeeLeaveHistoryPage.tsx",
+        "frontend/src/pages/SearchPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-10"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-set-the-app-title-and-user-facing-branding-text-to-sharaffiya-market-leave-register-in-the-ui",
+      "featureTitle": "Set the app title and user-facing branding text to \"Sharaffiya Market Leave Register\" in the UI.",
+      "files": [
+        "frontend/index.html",
+        "frontend/src/App.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-11"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-generate-and-include-basic-visual-assets-a-minimalist-app-logo-and-a-simple-header-illustration-consistent-with-the-chosen-theme-and-render-them-from-static-assets-in-the-frontend",
+      "featureTitle": "Generate and include basic visual assets: a minimalist app logo and a simple header illustration consistent with the chosen theme, and render them from static assets in the frontend.",
+      "files": [
+        "frontend/src/components/layout/MobileLayout.tsx",
+        "frontend/src/pages/HomePage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-12"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

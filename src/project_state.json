@@ -1,0 +1,171 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Admin-only Android leave register app for a shop owner/manager to manage employees and record/search leave entries with persistent storage, simple navigation, and optional export/reporting.",
+  "architectural_notes": [
+    "Admin-only application; no employee authentication/login flows required.",
+    "Target platform: Android phones; prioritize simple navigation across Home, Add Leave, Search, Employees.",
+    "Data persistence required across restarts; storage can be local-first or simple cloud-backed."
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- Minimalist logo mark with clean typography (sharaffiya-logo.dim_512x512.png)\n- Simple flat header illustration featuring a small shop and a calendar motif, minimal professional palette (leave-header-illustration.dim_1600x600.png)",
+  "existing_features": [
+    {
+      "id": "feature-add-admin-only-access-control-only-an-admin-owner-manager-can-access-and-modify-data-no-employee-login-flows-should-exist",
+      "title": "Add admin-only access control: only an Admin (Owner/Manager) can access and modify data; no employee login flows should exist.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-the-core-navigation-optimized-for-android-phones-with-clear-screens-home-add-leave-search-employees-and-per-employee-leave-history",
+      "title": "Create the core navigation optimized for Android phones with clear screens: Home, Add Leave, Search, Employees, and per-employee Leave History.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-employee-management-ui-allow-admin-to-add-and-view-employees-with-fields-employee-name-required-employee-id-optional-phone-number-optional-department-section-optional",
+      "title": "Employee Management UI: allow admin to add and view employees with fields Employee Name (required), Employee ID (optional), Phone Number (optional), Department/Section (optional).",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-leave-entry-ui-allow-admin-to-add-a-leave-entry-by-selecting-an-employee-from-the-employee-list-choosing-a-leave-date-via-calendar-picker-selecting-leave-type-full-day-morning-half-evening-half-and-optionally-entering-a-reason",
+      "title": "Leave Entry UI: allow admin to add a leave entry by selecting an employee from the employee list, choosing a leave date via calendar picker, selecting leave type (Full Day/Morning Half/Evening Half), and optionally entering a reason.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-leave-records-search-implement-a-search-screen-that-filters-leave-entries-by-employee-name-and-date-range-from-to-and-displays-results-showing-employee-name-date-and-leave-type",
+      "title": "Leave Records & Search: implement a Search screen that filters leave entries by Employee Name and date range (from–to) and displays results showing Employee Name, Date, and Leave Type.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-leave-history-view-implement-an-employee-wise-leave-history-page-with-a-monthly-view-summary-including-monthly-leave-count-per-employee",
+      "title": "Leave History View: implement an employee-wise leave history page with a monthly view summary (including monthly leave count per employee).",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-edit-delete-allow-admin-to-edit-or-delete-any-leave-entry-from-search-results-and-from-the-employee-leave-history-view",
+      "title": "Edit & Delete: allow admin to edit or delete any leave entry from search results and from the employee leave history view.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-simple-clean-professional-ui-theme-with-minimal-colors-optimized-for-android-phone-readability-enforce-consistent-typography-spacing-and-component-styling-across-all-screens",
+      "title": "Apply a simple, clean, professional UI theme with minimal colors, optimized for Android phone readability; enforce consistent typography, spacing, and component styling across all screens.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-optional-export-add-an-export-function-to-download-leave-data-as-a-file-csv-required-pdf-optional-if-feasible-filtered-by-the-current-search-criteria-or-by-employee-history-view",
+      "title": "Optional export: add an export function to download leave data as a file (CSV required; PDF optional if feasible) filtered by the current search criteria or by employee history view.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-set-the-app-title-and-user-facing-branding-text-to-sharaffiya-market-leave-register-in-the-ui",
+      "title": "Set the app title and user-facing branding text to \"Sharaffiya Market Leave Register\" in the UI.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-generate-and-include-basic-visual-assets-a-minimalist-app-logo-and-a-simple-header-illustration-consistent-with-the-chosen-theme-and-render-them-from-static-assets-in-the-frontend",
+      "title": "Generate and include basic visual assets: a minimalist app logo and a simple header illustration consistent with the chosen theme, and render them from static assets in the frontend.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Admin-only access (no employee login) with full control over employees and leave records",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Employee management: add/view employees with optional fields (ID, phone, department/section)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Leave entry: create leave for selected employee with date picker, leave type (full/morning half/evening half), optional reason",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Leave records & search: filter by employee name and date range; display name/date/leave type results",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Leave history views: per-employee leave history page and monthly summary view",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Edit and delete functionality for leave entries",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Persistent data storage using local storage or a simple cloud database (data survives app restart)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "UI/UX: simple clean professional design; easy navigation (Home, Add Leave, Search, Employees); optimized for Android phones; beginner-friendly screen structure",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Optional: export leave data to Excel/PDF and provide monthly leave count per employee",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Implement persistent backend storage for Employees and Leave Entries in the single Motoko actor, supporting create/read/update/delete (CRUD) operations and search queries needed by the UI.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "sharaffiya market leave register",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}
